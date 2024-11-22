@@ -35,7 +35,6 @@ const io = new Server(server, {
 
 io.on("connection", (socket) => {
   console.log("User connected: ", socket.id);
-
   socket.on("disconnect", () => console.log("User disconnected: ", socket.id));
 });
 
@@ -80,7 +79,7 @@ app.post("/signup", (req, res) => {
       if (err) console.log("Error getting data from db: ", err);
       if (result.length > 0)
         return res.json({
-          message: "User with this email is already existed",
+          message: "User with this email already exists",
           success: false,
         });
     }
@@ -207,7 +206,6 @@ client.on("message", function (topic, message) {
 app.post("/send-mqtt", (req, res) => {
   try {
     client.publish("esp8266/fromWeb", JSON.stringify(req.body));
-    // console.log(req.body);
     res.status(200).json({ message: "Sent data to mqtt", success: true });
   } catch (error) {
     console.log(error);
